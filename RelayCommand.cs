@@ -12,20 +12,18 @@ namespace LingoLift
     {
 
         readonly Action<object> _execute;
-        readonly Predicate<object> _canExecute;
+        readonly Predicate<object>? _canExecute;
 
         public RelayCommand(Action<object> execute) : this(execute, null) { }
-        public RelayCommand(Action<object> execute, Predicate<object> canExecute)
+        public RelayCommand(Action<object> execute, Predicate<object>? canExecute)
         {
-            if (execute == null)
-                throw new ArgumentNullException("execute");
+            ArgumentNullException.ThrowIfNull(execute);
 
             _execute = execute;
             _canExecute = canExecute;
         }
 
 
-        [DebuggerStepThrough]
         public bool CanExecute(object? parameter)
         {
             return _canExecute == null ? true : _canExecute(parameter!);
@@ -39,7 +37,6 @@ namespace LingoLift
 
         public void Execute(object? parameter)
         {
-
             _execute(parameter!);
         }
 

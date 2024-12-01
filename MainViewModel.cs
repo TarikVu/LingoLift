@@ -11,6 +11,8 @@ namespace LingoLift
 {
     public class MainViewModel : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler? PropertyChanged;
+
         public ICommand SelectPdfCommand { get; }
 
         public string hello = "Hello, World!";
@@ -21,15 +23,13 @@ namespace LingoLift
             {
                 hello = value; 
                 OnPropertyChanged();
-
             }
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
 
         public MainViewModel()
         {
-            SelectPdfCommand = new RelayCommand(param => SelectPdf() );
+            SelectPdfCommand = new RelayCommand(param => SelectPdf());
         }
 
         public void SelectPdf()

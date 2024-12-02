@@ -6,35 +6,50 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Microsoft.Win32;
+using UglyToad.PdfPig;
+using UglyToad.PdfPig.DocumentLayoutAnalysis.TextExtractor;
+using System.Diagnostics;
+using LingoLift.Services;
 
 namespace LingoLift
 {
     public class MainViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
+        private readonly PdfManager _pdfManager;
 
         public ICommand SelectPdfCommand { get; }
 
-        public string hello = "Hello, World!";
-        public string Hello
+        public string _preview = "Hello, World!";
+        public string Preview
         {
-            get => hello;
+            get => _preview;
             set
             {
-                hello = value; 
+                _preview = value;
                 OnPropertyChanged();
             }
         }
 
-
         public MainViewModel()
         {
             SelectPdfCommand = new RelayCommand(param => SelectPdf());
+            _pdfManager = new();
         }
 
         public void SelectPdf()
         {
-            Hello = "Hello, World! from SelectPdf";
+            var openFileDialog = new OpenFileDialog()
+            {
+                FileName = "Select a Pdf File",
+                Filter = "Pdf Files|*.pdf",
+                RestoreDirectory = true
+            };
+
+            openFileDialog.ShowDialog();
+            string filePath = openFileDialog.FileName;
+            _pdfManager.LoadPdf(filePath);
         }
 
         protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)

@@ -22,7 +22,10 @@ namespace LingoLift
             _execute = execute;
             _canExecute = canExecute;
         }
-
+        public void Execute(object? parameter)
+        {
+            _execute(parameter!);
+        }
 
         public bool CanExecute(object? parameter)
         {
@@ -34,11 +37,5 @@ namespace LingoLift
             add { CommandManager.RequerySuggested += value; }
             remove { CommandManager.RequerySuggested -= value; }
         }
-
-        public void Execute(object? parameter)
-        {
-            _execute(parameter!);
-        }
-
     }
 }
